@@ -1,36 +1,33 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, isValid as dateFnsIsValid, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
+import axios from 'axios'; 
 import './CalendarTable.css';
 
 function CalendarTable() {
     const navigate = useNavigate();
     const { year, month } = useParams();
 
-    // Memoize currentDate to prevent it from being recreated on every render
     const currentDate = useMemo(() => {
         return new Date(parseInt(year, 10), parseInt(month, 10) - 1);
     }, [year, month]);
-    
+
     const eventViewRef = useRef(null);
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isStatic, setIsStatic] = useState(false); // Added state for static content
 
     useEffect(() => {
         const fetchEvents = async () => {
-            const mockUrl = 'https://run.mocky.io/v3/555e0256-3863-48c3-ae92-f3f3fbd3b290';
+            const mockUrl = 'https://run.mocky.io/v3/982a30b9-e6c6-49c4-8598-78c4ecca9790';
             try {
-                const response = await fetch(mockUrl);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setEvents(data);
+                const response = await axios.get(mockUrl);
+                setEvents(response.data); // axios wraps the response data inside a data property
             } catch (error) {
                 console.error('Failed to fetch events:', error);
             }
         };
-
+    
         fetchEvents();
     }, []);
 
@@ -38,6 +35,9 @@ function CalendarTable() {
         if (!dateFnsIsValid(currentDate) || currentDate.getFullYear() < 1000 || currentDate.getFullYear() > 9999 || currentDate.getMonth() < 0 || currentDate.getMonth() > 11) {
             const now = new Date();
             navigate(`/${now.getFullYear()}/${now.getMonth() + 1}`);
+        } else {
+            // Check if it's a different month, and hide static content if needed
+            setIsStatic(false);
         }
     }, [navigate, currentDate]);
 
@@ -57,6 +57,7 @@ function CalendarTable() {
 
     const navigateToMonth = (offset) => {
         const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + offset);
+        setIsStatic(false);
         navigate(`/${newDate.getFullYear()}/${newDate.getMonth() + 1}`);
     };
 
@@ -66,11 +67,11 @@ function CalendarTable() {
     };
 
     const renderSelectedEventRow = () => {
-        if (selectedEvent) {
+        if (selectedEvent && !isStatic) { // Hide content when isStatic is true
             return (
                 <tr key="selected-event-row">
                     <td colSpan="7">
-                        <div className="event-view" style={{
+                        <div ref={eventViewRef} className="event-view" style={{
                             backgroundImage: `url(${selectedEvent.imageFilenameFull})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
@@ -80,9 +81,9 @@ function CalendarTable() {
                             color: '#FFFFFF',
                             padding: '20px',
                         }}>
-                            <h3>{selectedEvent.title}</h3>
-                            <p style={{ fontWeight: 'bold' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
-                            <p className='event-summary-background' style={{ fontWeight: 'bold' }}>{selectedEvent.summary}</p>
+                            <h3 style={{ fontWeight: 'bold', padding: '10px' }}>{selectedEvent.title}</h3>
+                            <p className='event-summary-background' style={{ fontWeight: 'unset', margin: '10px', padding: '0px' }}>{selectedEvent.summary}</p>
+                            <p style={{ fontWeight: 'bold', padding: '6px' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
                             <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
                             <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
                         </div>
