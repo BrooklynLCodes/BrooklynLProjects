@@ -1,44 +1,46 @@
-# React Sony Calendar App
+Calendar Release Date Project
+Description
+The Calendar Release Date Project is a React application designed to display a calendar with specific events marked on dates. These events represent release dates, providing users with a visual and interactive way to explore upcoming releases. Utilizing React Router for navigation, users can view events by month and year, and select individual dates to see detailed information about the event, including a summary, image, and links for more information or to pre-order.
 
-This project is a calendar application built with React. It allows users to navigate through months and years, view events on specific days, and offers a dynamic, URL-driven approach for date selection.
+Features
+Dynamic Calendar View: Display events on a monthly calendar.
+Event Details: Click on a date to view detailed information about the event.
+Month Navigation: Navigate between months to explore past or future events.
+Responsive Design: Adapt to various screen sizes for accessibility on desktop and mobile devices.
+Technologies Used
+React.js
+React Router
+date-fns for date manipulation
+CSS for styling
+Setup
+To run this project locally, follow these steps:
 
-## Getting Started
+Clone the repository
+bash
+Copy code
+git clone https://your-repository-link.git
+cd sony-calendar-brooklyn
+Install dependencies
+Make sure you have node.js and npm installed on your machine, then run:
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-Before running the project, ensure you have [Node.js](https://nodejs.org/) installed on your system. This will include `npm`, which is needed to install dependencies and run the app.
-
-### Installing
-
-To set up the project for development on your local machine, follow these steps:
-
-1. **Clone the repository:**
-
-```bash
-git clone https://example.com/your-application.git
-cd your-application
+bash
+Copy code
 npm install
+Start the development server
+bash
+Copy code
+npm start
+This will launch the app in development mode. Open http://localhost:3000 to view it in the browser.
 
-How to run the app:
+Usage
+Navigate through the calendar using the "<" and ">" buttons to move to the previous or next month, respectively. Click on a day with an event to view details about the release, including an image, summary, and links for further information or to place a pre-order.
 
-npm start # Runs the app in the development mode.
+Contributing
+Contributions are welcome! If you have ideas for new features or improvements, please fork the repository and submit a pull request. You can also open an issue with the tag "enhancement".
 
-Run Automated testing :
-npm test
+License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
 
-
-For your README.md file, when detailing what your app was built with, you can highlight the main technologies, libraries, and tools used in the development. Given the code snippet and project description you provided, here's an example of what you might include under a "Built With" section:
-
-Built With
-React - A JavaScript library for building user interfaces. This project utilizes React for its component-based architecture, facilitating the development of a dynamic and interactive calendar application.
-React Router - This library is used for handling routing in this single-page application (SPA), allowing navigation between different parts of the application without refreshing the page.
-date-fns - A modern JavaScript date utility library used for manipulating and formatting dates, crucial for the calendar functionality in this app.
-Fetch API - Used for making network requests to fetch events data from a mock API, enabling asynchronous communication with backend services.
-CSS - For styling the application, ensuring a responsive and visually appealing user interface.
-Jest - Utilized for writing unit tests to ensure the reliability and robustness of the application's components and logic.
-ESLint - A linting tool used to maintain code quality and consistency, enforcing a set of coding standards and identifying potential errors.
-
-
-
+Acknowledgments
+Thanks to the date-fns library for providing an extensive set of tools for manipulating JavaScript dates in a browser & Node.js.
+React Router for enabling navigation between views in this single-page application.
