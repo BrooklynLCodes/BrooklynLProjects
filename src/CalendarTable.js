@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, isValid as dateFnsIsValid, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import './CalendarTable.css';
@@ -6,7 +6,11 @@ import './CalendarTable.css';
 function CalendarTable() {
     const navigate = useNavigate();
     const { year, month } = useParams();
-    const currentDate = new Date(parseInt(year, 10), parseInt(month, 10) - 1);
+
+    // Memoize currentDate to prevent it from being recreated on every render
+    const currentDate = useMemo(() => {
+        return new Date(parseInt(year, 10), parseInt(month, 10) - 1);
+    }, [year, month]);
     
     const eventViewRef = useRef(null);
     const [events, setEvents] = useState([]);
@@ -49,8 +53,8 @@ function CalendarTable() {
         return () => {
             document.removeEventListener('click', handleDocumentClick);
         };
-    }, []); 
- 
+    }, []);
+
     const navigateToMonth = (offset) => {
         const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + offset);
         navigate(`/${newDate.getFullYear()}/${newDate.getMonth() + 1}`);
