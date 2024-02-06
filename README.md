@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# React Sony Calendar App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a calendar application built with React. It allows users to navigate through months and years, view events on specific days, and offers a dynamic, URL-driven approach for date selection.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### `npm start`
+### Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Before running the project, ensure you have [Node.js](https://nodejs.org/) installed on your system. This will include `npm`, which is needed to install dependencies and run the app.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Installing
 
-### `npm test`
+To set up the project for development on your local machine, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository:**
 
-### `npm run build`
+```bash
+git clone https://example.com/your-application.git
+cd your-application
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+How to run the app:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm start # Runs the app in the development mode.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Run Automated testing :
+npm test
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+For your README.md file, when detailing what your app was built with, you can highlight the main technologies, libraries, and tools used in the development. Given the code snippet and project description you provided, here's an example of what you might include under a "Built With" section:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Built With
+React - A JavaScript library for building user interfaces. This project utilizes React for its component-based architecture, facilitating the development of a dynamic and interactive calendar application.
+React Router - This library is used for handling routing in this single-page application (SPA), allowing navigation between different parts of the application without refreshing the page.
+date-fns - A modern JavaScript date utility library used for manipulating and formatting dates, crucial for the calendar functionality in this app.
+Fetch API - Used for making network requests to fetch events data from a mock API, enabling asynchronous communication with backend services.
+CSS - For styling the application, ensuring a responsive and visually appealing user interface.
+Jest - Utilized for writing unit tests to ensure the reliability and robustness of the application's components and logic.
+ESLint - A linting tool used to maintain code quality and consistency, enforcing a set of coding standards and identifying potential errors.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
