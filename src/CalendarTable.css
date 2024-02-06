@@ -104,9 +104,32 @@ thead th {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  max-width: 45%; /* Limit the max width to the container size */
-  max-height: 350px;
+  max-width: 55%; 
+  max-height: 450px;
+  margin: 8px 0;
+  max-height: 250px;
+  text-align: left;
+  overflow-y: auto;
+  padding-left: 5px; 
+} 
+
+@media (max-width: 768px) {
+  .event-view {
+      flex-direction: column;
+  }
+
 }
+
 .event-view p {
   text-align: left;
+  padding-bottom: 80px;
 } 
+.buttons-container {
+  position:left;
+  bottom: 20px; 
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: left; 
+}
+
