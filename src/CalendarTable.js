@@ -61,8 +61,8 @@ function CalendarTable() {
         if (selectedEvent && !imageLoading) {
             return (
                 <div className="buttons-container">
-                    <button className="learn-more-btn" onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
-                    <button className="preorder-btn" onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
+                    <button style={{ fontWeight: 'bold' }} className="learn-more-btn" onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
+                    <button style={{ fontWeight: 'bold' }}className="preorder-btn" onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
                 </div>
             );
         }
@@ -80,8 +80,8 @@ function CalendarTable() {
                                 <div className="loading-spinner">Loading image...</div>
                             ) : (
                                 <>
-                                    <h3>{selectedEvent.title}</h3>
-                                    <p>{selectedEvent.summary}</p>
+                                   <h3 style={{ fontWeight: 'bold', padding: '6px' }}>{selectedEvent.title}</h3>
+                                    <p className='event-summary-background'>{selectedEvent.summary}</p>
                                     {renderButtons()}
                                 </>
                             )}
