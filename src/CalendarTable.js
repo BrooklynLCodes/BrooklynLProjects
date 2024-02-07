@@ -83,11 +83,13 @@ function CalendarTable() {
                                     <h3 style={{ fontWeight: 'bold', padding: '6px' }}>{selectedEvent.title}</h3>
                                     <p className='event-summary-background'>{selectedEvent.summary}</p>
                                     <p style={{ fontWeight: 'bold', padding: '6px' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
-                                    <div className="buttons-container">
-                                        <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
-                                        <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
-                                    </div>
                                 </>
+                            )}
+                            {!imageLoading && (
+                                <div className="buttons-container">
+                                    <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
+                                    <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
+                                </div>
                             )}
                         </div>
                     </td>
@@ -96,7 +98,6 @@ function CalendarTable() {
         }
         return null;
     };
-
     const renderDays = () => {
         const startDay = startOfMonth(currentDate);
         const endDay = endOfMonth(currentDate);
