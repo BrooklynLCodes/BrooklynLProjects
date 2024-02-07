@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, isValid as dateFnsIsValid, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
+import useFetchEvents from './useFetchEvents';
 import './CalendarTable.css';
 
 function CalendarTable() {
@@ -12,31 +13,13 @@ function CalendarTable() {
     }, [year, month]);
 
     const eventViewRef = useRef(null);
-    const [events, setEvents] = useState([]);
+    const { events, error, isLoading } = useFetchEvents('https://run.mocky.io/v3/8c886271-a8c6-43a7-a242-8ad1d3dccf39');
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [imageLoading, setImageLoading] = useState(true);
     const [isStatic, setIsStatic] = useState(false); 
 
     useEffect(() => {
-        const fetchEvents = async () => {
-          try {
-            const response = await fetch('https://run.mocky.io/v3/8c886271-a8c6-43a7-a242-8ad1d3dccf39');
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setEvents(data);
-          } catch (error) {
-            console.error('Failed to fetch events:', error);
-          }
-        };
-      
-        fetchEvents();
-      }, []);
-      
-      
-
-    useEffect(() => {
-        if (!dateFnsIsValid(currentDate) || currentDate.getFullYear() < 1000 || currentDate.getFullYear() > 9999 || currentDate.getMonth() < 0 || currentDate.getMonth() > 11) {
+        if (!dateFnsIsValid(currentDate)) {
             const now = new Date();
             navigate(`/${now.getFullYear()}/${now.getMonth() + 1}`);
         } else {
@@ -45,22 +28,18 @@ function CalendarTable() {
     }, [navigate, currentDate]);
 
     useEffect(() => {
-        const handleDocumentClick = (e) => {
-            if (eventViewRef.current && !eventViewRef.current.contains(e.target)) {
+        function handleDocumentClick(e) {
+            if (!eventViewRef.current?.contains(e.target)) {
                 setSelectedEvent(null);
             }
-        };
+        }
 
         document.addEventListener('click', handleDocumentClick);
-
-        return () => {
-            document.removeEventListener('click', handleDocumentClick);
-        };
+        return () => document.removeEventListener('click', handleDocumentClick);
     }, []);
 
     const navigateToMonth = (offset) => {
         const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + offset);
-        setIsStatic(false); 
         navigate(`/${newDate.getFullYear()}/${newDate.getMonth() + 1}`);
     };
 
@@ -68,32 +47,42 @@ function CalendarTable() {
         e.stopPropagation();
         setSelectedEvent(event);
     };
+    useEffect(() => {
+        if (selectedEvent) {
+            const img = new Image();
+            img.src = selectedEvent.imageFilenameFull;
+            img.onload = () => setImageLoading(false);
+        }
+    }, [selectedEvent]);
+    
 
+    if (isLoading) {
+        return <div>Loading events...</div>;
+    }
+    
+    if (error) {
+        return <div>Error fetching events: {error.message}</div>;
+    }
+    
     const renderSelectedEventRow = () => {
-        if (selectedEvent && !isStatic) { 
+        if (selectedEvent && !isStatic) {
             return (
                 <tr key="selected-event-row">
                     <td colSpan="7">
-                        <div ref={eventViewRef} className="event-view" style={{
-                           backgroundImage: `url(${selectedEvent.imageFilenameFull})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            height: '275px',
-                            width: '875px',
-                            color: '#FFFFFF',
-                            marginTop: '20px',
-                            paddingLeft: '20px',
-                            padding: '20px',
-                            paddingBottom: '90px',
-                        }}>
-                                      <h3 style={{ fontWeight: 'bold', padding: '10px' }}>{selectedEvent.title}</h3>
-                                      <p className='event-summary-background' style={{ fontWeight: 'unset', margin: '10px', padding: '0px' }}>{selectedEvent.summary}</p>
-                            <p style={{ fontWeight: 'bold', padding: '6px' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
-                            <div className="buttons-container">
-                            <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
-                            <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
-                            </div>
+                        <div ref={eventViewRef} className="event-view" style={{ backgroundImage: `url(${selectedEvent.imageFilenameFull})` }}>
+                            {imageLoading ? (
+                                <div className="loading-spinner">Loading image...</div>
+                            ) : (
+                                <>
+                                    <h3>{selectedEvent.title}</h3>
+                                    <p className='event-summary-background'>{selectedEvent.summary}</p>
+                                    <p>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
+                                    <div className="buttons-container">
+                                        <button className="learn-more-btn" onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
+                                        <button className="preorder-btn" onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </td>
                 </tr>
@@ -142,20 +131,26 @@ function CalendarTable() {
 
     return (
         <div className="calendar-container">
-            <div className="header">
-                <button onClick={() => navigateToMonth(-1)}>&lt;</button>
-                <h2>{format(currentDate, 'MMMM yyyy')}</h2>
-                <button onClick={() => navigateToMonth(1)}>&gt;</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(day => <th key={day}>{day}</th>)}</tr>
-                </thead>
-                <tbody>{renderDays()}</tbody>
-            </table>
+            {isLoading && <div className="loading">Loading events...</div>}
+            {error && <div className="error">Error fetching events: {error.message}</div>}
+    
+            {!isLoading && !error && (
+                <>
+                    <div className="header">
+                        <button onClick={() => navigateToMonth(-1)}>&lt;</button>
+                        <h2>{format(currentDate, 'MMMM yyyy')}</h2>
+                        <button onClick={() => navigateToMonth(1)}>&gt;</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(day => <th key={day}>{day}</th>)}</tr>
+                        </thead>
+                        <tbody>{renderDays()}</tbody>
+                    </table>
+                </>
+            )}
         </div>
     );
 }
 
 export default CalendarTable;
-
