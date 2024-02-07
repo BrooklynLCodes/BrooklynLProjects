@@ -31,6 +31,7 @@ function CalendarTable() {
         function handleDocumentClick(e) {
             if (!eventViewRef.current?.contains(e.target)) {
                 setSelectedEvent(null);
+                setImageLoading(true); 
             }
         }
 
@@ -57,30 +58,30 @@ function CalendarTable() {
     }, [selectedEvent]);
     
     const renderButtons = () => {
-        if (!imageLoading) {
+        if (selectedEvent && !imageLoading) {
             return (
                 <div className="buttons-container">
-                    <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
-                    <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
+                    <button className="learn-more-btn" onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
+                    <button className="preorder-btn" onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
                 </div>
             );
         }
         return null;
     };
+    
 
     const renderSelectedEventRow = () => {
         if (selectedEvent && !isStatic) {
             return (
                 <tr key="selected-event-row">
                     <td colSpan="7">
-                        <div ref={eventViewRef} className={`event-view ${imageLoading ? 'loading-background' : ''}`} style={{backgroundImage: `url(${selectedEvent.imageFilenameFull})`}}>
+                        <div ref={eventViewRef} className={`event-view ${imageLoading ? 'loading-background' : ''}`} style={{backgroundImage: `url(${selectedEvent?.imageFilenameFull})`}}>
                             {imageLoading ? (
                                 <div className="loading-spinner">Loading image...</div>
                             ) : (
                                 <>
-                                    <h3 style={{ fontWeight: 'bold', padding: '6px' }}>{selectedEvent.title}</h3>
-                                    <p className='event-summary-background'>{selectedEvent.summary}</p>
-                                    <p style={{ fontWeight: 'bold', padding: '6px' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
+                                    <h3>{selectedEvent.title}</h3>
+                                    <p>{selectedEvent.summary}</p>
                                     {renderButtons()}
                                 </>
                             )}
@@ -91,7 +92,6 @@ function CalendarTable() {
         }
         return null;
     };
-    
     const renderDays = () => {
         const startDay = startOfMonth(currentDate);
         const endDay = endOfMonth(currentDate);
