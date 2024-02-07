@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, isValid as dateFnsIsValid, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import useFetchEvents from './useFetchEvents';
-import { BarLoader } from 'react-spinners'; // Import BarLoader from react-spinners library
 import './CalendarTable.css';
 
 function CalendarTable() {
