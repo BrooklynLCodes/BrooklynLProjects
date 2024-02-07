@@ -48,6 +48,7 @@ function CalendarTable() {
         e.stopPropagation();
         setSelectedEvent(event);
     };
+    
     useEffect(() => {
         if (selectedEvent) {
             const img = new Image();
@@ -56,20 +57,18 @@ function CalendarTable() {
         }
     }, [selectedEvent]);
     
+    const renderButtons = () => {
+        if (!imageLoading) {
+            return (
+                <div className="buttons-container">
+                    <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
+                    <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
+                </div>
+            );
+        }
+        return null;
+    };
 
-    if (isLoading) {
-        return (
-            <div className="loading">
-                <BarLoader color="#36D7B7" loading={isLoading} />
-                <div>Loading events...</div>
-            </div>
-        );
-    }
-    
-    if (error) {
-        return <div className="error">Error fetching events: {error.message}</div>;
-    }
-    
     const renderSelectedEventRow = () => {
         if (selectedEvent && !isStatic) {
             return (
@@ -83,10 +82,7 @@ function CalendarTable() {
                                     <h3 style={{ fontWeight: 'bold', padding: '6px' }}>{selectedEvent.title}</h3>
                                     <p className='event-summary-background'>{selectedEvent.summary}</p>
                                     <p style={{ fontWeight: 'bold', padding: '6px' }}>{format(new Date(selectedEvent.launchDate), 'PPP')}</p>
-                                    <div className="buttons-container">
-                                        <button className="learn-more-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.learnMoreLink, '_blank', 'noopener,noreferrer')}>Learn More</button>
-                                        <button className="preorder-btn" style={{ fontWeight: 'bold' }} onClick={() => window.open(selectedEvent.purchaseLink, '_blank', 'noopener,noreferrer')}>Pre-Order Now</button>
-                                    </div>
+                                    {renderButtons()}
                                 </>
                             )}
                         </div>
@@ -96,6 +92,7 @@ function CalendarTable() {
         }
         return null;
     };
+    
     const renderDays = () => {
         const startDay = startOfMonth(currentDate);
         const endDay = endOfMonth(currentDate);
