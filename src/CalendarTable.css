@@ -129,4 +129,9 @@ thead th {
   align-items: center;
   height: 275px;
 }
+.loading-background {
+  /* Add your desired background pattern or color */
+  background-color: #f0f0f0; /* Example color */
+}
+
 

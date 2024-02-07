@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format, isValid as dateFnsIsValid, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import useFetchEvents from './useFetchEvents';
+import { BarLoader } from 'react-spinners'; // Import BarLoader from react-spinners library
 import './CalendarTable.css';
 
 function CalendarTable() {
@@ -57,11 +58,16 @@ function CalendarTable() {
     
 
     if (isLoading) {
-        return <div>Loading events...</div>;
+        return (
+            <div className="loading">
+                <BarLoader color="#36D7B7" loading={isLoading} />
+                <div>Loading events...</div>
+            </div>
+        );
     }
     
     if (error) {
-        return <div>Error fetching events: {error.message}</div>;
+        return <div className="error">Error fetching events: {error.message}</div>;
     }
     
     const renderSelectedEventRow = () => {
@@ -69,7 +75,7 @@ function CalendarTable() {
             return (
                 <tr key="selected-event-row">
                     <td colSpan="7">
-                        <div ref={eventViewRef} className="event-view" style={{backgroundImage: `url(${selectedEvent.imageFilenameFull})`}}>
+                        <div ref={eventViewRef} className={`event-view ${imageLoading ? 'loading-background' : ''}`} style={{backgroundImage: `url(${selectedEvent.imageFilenameFull})`}}>
                             {imageLoading ? (
                                 <div className="loading-spinner">Loading image...</div>
                             ) : (
