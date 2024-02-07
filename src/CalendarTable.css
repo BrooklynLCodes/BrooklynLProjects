@@ -93,7 +93,7 @@ thead th {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  max-width: 55%; 
+  max-width: 45%; 
   max-height: 250px;
   margin: 8px 0;
   text-align: left;
@@ -107,7 +107,7 @@ thead th {
   background-position: center;
   background-repeat: no-repeat;
   height: 275px;
-  width: 875px;
+  width: auto;
   color: #FFFFFF;
   margin-top: 20px;
   padding: 20px;
